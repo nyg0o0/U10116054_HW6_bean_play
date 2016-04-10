@@ -12,16 +12,14 @@
 
 // import library
 import javafx.application.Application;
-import javafx.collections.ObservableList;
 import javafx.scene.Scene;
-import javafx.scene.Group;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.shape.*;
-import java.lang.Math;
 import javafx.animation.*;
 import javafx.util.Duration;
+import java.lang.Math;
 
 // BeanGame class
 public class BeanGame extends Application {
@@ -30,11 +28,12 @@ public class BeanGame extends Application {
 		final int NODE_NUMS = 28;
 		final int SLOT_NUMS = 7;
 		int beanNumsCurrent = 0;
+		int times=0;
 		// stage size
 		final double WIDTH = 400, HEIGHT = 400;
 		double centerX = WIDTH / 2, centerY = HEIGHT /2;	
 		double[][] nodeArr = new double[NODE_NUMS][2]; 
-		
+
 		// Create a new pane
 		Pane pane = new Pane();
 		
@@ -49,7 +48,7 @@ public class BeanGame extends Application {
 			double dx = nodeArr[NODE_NUMS-1][0]-nodeArr[NODE_NUMS-2][0];
 			double dy = nodeArr[NODE_NUMS-1][1]-nodeArr[NODE_NUMS-2][1];
 			double currentX = 0.0, currentY = 0.0;
-			
+
 			// new a object for bean( circle with x, y, radius and colors. ) and add to the pane
 			Circle beanObj = new Circle(beanStartX,beanStartY,4,Color.rgb((int)(Math.random()*256),(int)(Math.random()*256),(int)(Math.random()*256)));
 			pane.getChildren().add(beanObj);
@@ -78,9 +77,11 @@ public class BeanGame extends Application {
 					}
 				}	
 			}
+
 			animation.getKeyFrames().addAll(bean[0],bean[1],bean[2],bean[3],bean[4],bean[5],bean[6],bean[7],bean[8],bean[9]);	// add the frames to the timeline
 			animation.play();	// play the frames of a bean
 		});
+		times++;
 
 		/* Creat a new polyline */
 		Polyline polyline = new Polyline();
