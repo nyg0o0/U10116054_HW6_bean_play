@@ -1,9 +1,9 @@
 /* 
-********************** BeanGame java Assignment *********************
+********************** BeanGame Plsy java Assignment ****************
 *	Strudent ID: U10116054											*
 *	Strudent Name: Yu-Hsin Chen										*
-*	Assign Date: 4/2												*
-*	Content: This is a interface program for bean manchine.			*
+*	Assign Date: 4/10												*
+*	Content: This is a program for bean manchine.					*
 *********************************************************************
 *	--> BeanGame.java : Test class									*
 *********************************************************************
@@ -26,38 +26,60 @@ import javafx.util.Duration;
 // BeanGame class
 public class BeanGame extends Application {
 	public void start(Stage primaryStage) { 
-	
+		// numbers of balls, nodes, lines, ball's frame (const)
+		final int BALL_NUMS = 10;
+		final int NODE_NUMS = 28;
+		final int LINE_NUMS = 7;
+		final int BALL_FRAME_NUMS = 10;	
+		
 		// stage size
 		final double WIDTH = 400, HEIGHT = 400;
-		double centerX = WIDTH / 2, centerY = HEIGHT /2;
-		int BALL_NUMS = 28;
-		
-		
+		double centerX = WIDTH / 2, centerY = HEIGHT /2;	
+		double[][] nodeArr = new double[NODE_NUMS][2]; 
+
+			
 		// Create a new pane
 		Pane pane = new Pane();
+		
+		/* mouse event for trigger the animatiton of the balls */
 		pane.setOnMouseClicked(e -> {
-			Group circles = new Group();
-			for(int i=0;i<7;i++){
-				Circle circle = new Circle(3,Color.RED);
-				circles.getChildren().add(circle);
-				//circle.setRadius(3);
-			//circle.setCenterX(centerX);
-			//circle.setCenterY(centerY - (Math.sqrt(3)/2)* 0.3* HEIGHT - 0.1* HEIGHT);
-			//circle.setFill(Color.RED);
-			//pane.getChildren().add(circle);
-			}
-			Timeline timeline = new Timeline();
-			Node circle = circles.getChildren().get(0);
-			timeline.getKeyFrames().addAll(
-			new KeyFrame(new Duration(5000),
-			new KeyValue(circle.translateXProperty(), 600),
-			new KeyValue(circle.translateYProperty(), 0)),
-			new KeyFrame(new Duration(10000),
-			new KeyValue(circle.translateXProperty(), 0),
-			new KeyValue(circle.translateYProperty(), 480)
-			));
+			// some variable for ball's animation
+			double beanStartX = centerX;
+			double beanStartY = centerY - (Math.sqrt(3)/2)* 0.3* HEIGHT - 0.1* HEIGHT;
+			double dx = nodeArr[NODE_NUMS-1][0]-nodeArr[NODE_NUMS-2][0];
+			double dy = nodeArr[NODE_NUMS-1][1]-nodeArr[NODE_NUMS-2][1];
+			double currentX = 0.0, currentY = 0.0;
 			
-			timeline.play();
+			Circle ballObj = new Circle(beanStartX,beanStartY,4,Color.RED);
+			
+			pane.getChildren().add(ballObj);
+
+			/* creat a new timeline for ball's animation */
+			Timeline animation = new Timeline();
+			KeyFrame[] ball = new KeyFrame[BALL_FRAME_NUMS];
+			
+			for(int i=0 ; i<BALL_FRAME_NUMS ; i++){
+				int duration = 500*i;
+				if(i==0){	// frame 0
+					ball[i] = new KeyFrame(Duration.millis(duration),new KeyValue(ballObj.translateXProperty(), currentX), new KeyValue(ballObj.translateYProperty(), currentY));
+				}
+				else if(i==1){
+					ball[i] = new KeyFrame(Duration.millis(duration),new KeyValue(ballObj.translateXProperty(), currentX), new KeyValue(ballObj.translateYProperty(), currentY=currentY+45)); 
+				}
+				else if(i==9){
+					ball[i] = new KeyFrame(Duration.millis(duration),new KeyValue(ballObj.translateXProperty(), currentX), new KeyValue(ballObj.translateYProperty(), currentY=currentY+50)); 
+				}
+				else{
+					if(((int)(Math.random()*2))==0){
+						ball[i] = new KeyFrame(Duration.millis(duration),new KeyValue(ballObj.translateXProperty(), currentX = currentX + dx), new KeyValue(ballObj.translateYProperty(), currentY=currentY-dy));
+					}
+					else{
+						ball[i] = new KeyFrame(Duration.millis(duration),new KeyValue(ballObj.translateXProperty(), currentX = currentX - dx), new KeyValue(ballObj.translateYProperty(), currentY=currentY-dy));		
+					}
+				}	
+			}
+			animation.getKeyFrames().addAll(ball[0],ball[1],ball[2],ball[3],ball[4],ball[5],ball[6],ball[7],ball[8],ball[9]);
+			animation.play();
 		});
 
 		/* Creat a new polyline */
@@ -75,22 +97,26 @@ public class BeanGame extends Application {
 		pane.getChildren().add(polyline);	// add the polyline to the pane
 		
 		/* Creat a new line arrays */
-		Line[] line = new Line[7];
-		for(int i=0;i<7;i++){
+		Line[] line = new Line[LINE_NUMS];
+		for(int i=0;i<LINE_NUMS;i++){
 			line[i] = new Line(	centerX+ 0.0875* WIDTH*(i-3),centerY + (Math.sqrt(3)/2)* 0.3* HEIGHT ,
 								centerX+ 0.0875* WIDTH*(i-3),centerY + (Math.sqrt(3)/2)* 0.3* HEIGHT + 0.15* HEIGHT);	// add the line with the coordinates
 			pane.getChildren().add(line[i]);	// add the line array to the pane
 		}
 		
 		/* Creat a new circle arrays */
-		Circle[] circle = new Circle[28];
-			for( int j=7;j>0;j-- ){
+		Circle[] circle = new Circle[NODE_NUMS];
+		int nodeIndex = 0;
+			for( int j = LINE_NUMS ; j>0 ; j-- ){
 				for(int i=0;i<j;i++){
 					circle[i] = new Circle();
 					circle[i].setRadius(5.0);	// set the radius
-					circle[i].setLayoutX(centerX+ 0.0875* WIDTH*(i-3+0.5*(7-j)));	// set the circle's x coordinates
-					circle[i].setLayoutY(centerY + (Math.sqrt(3)/2)* 0.3* HEIGHT - 0.0875* WIDTH*(7-j)*0.85);	// set the circle's y coordinates
+					nodeArr[nodeIndex][0]= centerX + 0.0875* WIDTH*(i-3+0.5*(LINE_NUMS-j));
+					nodeArr[nodeIndex][1]= centerY + (Math.sqrt(3)/2)* 0.3* HEIGHT - 0.0875* WIDTH*(7-j)*0.85;
+					circle[i].setLayoutX(nodeArr[nodeIndex][0]);	// set the circle's x coordinates
+					circle[i].setLayoutY(nodeArr[nodeIndex][1]);	// set the circle's y coordinates
 					pane.getChildren().add(circle[i]);// add the circle array to the pane
+					nodeIndex++;
 				}
 			}
 
