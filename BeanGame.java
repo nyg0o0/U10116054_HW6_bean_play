@@ -27,8 +27,7 @@ public class BeanGame extends Application {
 		// numbers of beans, nodes, lines, bean's frame (const)
 		final int NODE_NUMS = 28;
 		final int SLOT_NUMS = 7;
-		int beanNumsCurrent = 0;
-		int times=0;
+		
 		// stage size
 		final double WIDTH = 400, HEIGHT = 400;
 		double centerX = WIDTH / 2, centerY = HEIGHT /2;	
@@ -81,7 +80,7 @@ public class BeanGame extends Application {
 			animation.getKeyFrames().addAll(bean[0],bean[1],bean[2],bean[3],bean[4],bean[5],bean[6],bean[7],bean[8],bean[9]);	// add the frames to the timeline
 			animation.play();	// play the frames of a bean
 		});
-		times++;
+
 
 		/* Creat a new polyline */
 		Polyline polyline = new Polyline();
