@@ -51,7 +51,7 @@ public class BeanGame extends Application {
 			double dy = nodeArr[NODE_NUMS-1][1]-nodeArr[NODE_NUMS-2][1];
 			double currentX = 0.0, currentY = 0.0;
 			
-			Circle beanObj = new Circle(beanStartX,beanStartY,4,Color.RED);
+			Circle beanObj = new Circle(beanStartX,beanStartY,4,Color.rgb((int)(Math.random()*256),(int)(Math.random()*256),(int)(Math.random()*256)));
 			
 			pane.getChildren().add(beanObj);
 
