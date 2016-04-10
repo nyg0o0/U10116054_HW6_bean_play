@@ -35,7 +35,6 @@ public class BeanGame extends Application {
 		double centerX = WIDTH / 2, centerY = HEIGHT /2;	
 		double[][] nodeArr = new double[NODE_NUMS][2]; 
 		
-			
 		// Create a new pane
 		Pane pane = new Pane();
 		
@@ -51,8 +50,8 @@ public class BeanGame extends Application {
 			double dy = nodeArr[NODE_NUMS-1][1]-nodeArr[NODE_NUMS-2][1];
 			double currentX = 0.0, currentY = 0.0;
 			
+			// new a object for bean( circle with x, y, radius and colors. ) and add to the pane
 			Circle beanObj = new Circle(beanStartX,beanStartY,4,Color.rgb((int)(Math.random()*256),(int)(Math.random()*256),(int)(Math.random()*256)));
-			
 			pane.getChildren().add(beanObj);
 
 			/* creat a new timeline for bean's animation */
@@ -79,8 +78,8 @@ public class BeanGame extends Application {
 					}
 				}	
 			}
-			animation.getKeyFrames().addAll(bean[0],bean[1],bean[2],bean[3],bean[4],bean[5],bean[6],bean[7],bean[8],bean[9]);
-			animation.play();
+			animation.getKeyFrames().addAll(bean[0],bean[1],bean[2],bean[3],bean[4],bean[5],bean[6],bean[7],bean[8],bean[9]);	// add the frames to the timeline
+			animation.play();	// play the frames of a bean
 		});
 
 		/* Creat a new polyline */
@@ -127,6 +126,8 @@ public class BeanGame extends Application {
 		primaryStage.setScene(scene);	// put the pane on the stage
 		primaryStage.show();	// show it!
 	}
+	
+	/* Main method */
 	public static void main(String[] args) {
 		Application.launch(args);
 	}
